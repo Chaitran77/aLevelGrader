@@ -11,33 +11,55 @@ public class Main {
 
         int paperMark;
         double paperPercentage;
-        char paperLevel = 0;
+
         System.out.println("Type the maximum possible marks for this paper:\n");
         int maxMarks = scanner.nextInt();
 
         while (!exit) {
             System.out.println("Type the current paper's mark: \n");
-            paperMark = scanner.nextInt();
-            paperPercentage = (double)(paperMark/maxMarks)*100;
-            System.out.println("% " + paperPercentage);
 
+            try {
+                paperMark = scanner.nextInt();
 
-            if (paperPercentage > 80) {
-                paperLevel = 'A';
-            } else if ((paperPercentage > 70) && (paperPercentage < 79)) {
-                paperLevel = 'B';
-            } else if ((paperPercentage > 60) && (paperPercentage < 69)) {
-                paperLevel = 'C';
-            } else if ((paperPercentage > 50) && (paperPercentage < 59)){
-                paperLevel = 'D';
-            } else if ((paperPercentage > 40) && (paperPercentage < 49)) {
-                paperLevel = 'E';
-            } else if (paperPercentage < 40) {
-                paperLevel = 'U';
+                paperPercentage = ((double)paperMark/maxMarks)*100;
+                System.out.println("% " + paperPercentage);
+
+                if (paperPercentage > 100) {
+                    System.out.println("Invalid input (greater than max). Try again.");
+                } else {
+                    calculateGrade(paperPercentage);
+                }
+
+            } catch (java.util.InputMismatchException e) {
+                if (scanner.next().contains("exit")) {
+                    System.out.println("Exit - Goodbye.");
+                    exit = true; // could also use System.exit(0); here - would also remove need for exit var
+                } else {
+                    System.out.println("Error, please only type numeric characters. Try again: ");
+                }
             }
 
-            System.out.println("Grade achieved: " + paperLevel);
-
         }
+    }
+
+    public static void calculateGrade(double percentage) {
+
+        char paperLevel = 0;
+
+        if (percentage >= 80) {
+            paperLevel = 'A';
+        } else if ((percentage >= 70) && (percentage <= 79)) {
+            paperLevel = 'B';
+        } else if ((percentage >= 60) && (percentage <= 69)) {
+            paperLevel = 'C';
+        } else if ((percentage >= 50) && (percentage <= 59)){
+            paperLevel = 'D';
+        } else if ((percentage >= 40) && (percentage <= 49)) {
+            paperLevel = 'E';
+        } else if (percentage < 40) {
+            paperLevel = 'U';
+        }
+        System.out.println("Grade achieved: " + paperLevel);
+
     }
 }
